@@ -1,7 +1,7 @@
 //Create a variable allowing us to use inquirer npm package
 var inquirer = require("inquirer");
 //Create a list of words from which one will be randomly chosen for the user to guess
-var words = ["Google", "Amazon", "Facebook", "Netflix", "Tesla"];
+var words = ["GE", "Amazon", "Square", "Netflix", "Tesla"];
 var triesLeft = 10;
 function start() {
     //Randomly selects a word from the words array
@@ -15,7 +15,6 @@ function start() {
         guessString += guessArray[i];
     }
     console.log("Guess the tech company below by filling in the blanks!");
-    console.log(word);
     console.log(guessString);
     function promptUser() {
         inquirer.prompt([
@@ -24,12 +23,17 @@ function start() {
                 message: "Guess a letter!"
             }
         ]).then(function(answers) {
-            if (word.indexOf(answers.letterGuess) > -1) {
-                guessArray.splice(word.indexOf(answers.letterGuess), 1, answers.letterGuess);
+            var letter = answers.letterGuess.toLowerCase();
+            word = word.toLowerCase();
+            if (word.indexOf(letter) > -1) {
+                guessArray.splice(word.indexOf(letter), 1, letter);
                 console.log("Yes that letter is in the word.");
                 console.log(guessArray);
-                console.log(guessArray.join(""));
-                promptUser();
+                if (guessArray.join("") === word) {
+                    console.log("Congrats! The word was indeed " + word);
+                } else {
+                    promptUser();
+                }
             } else {
                 triesLeft -= 1;
                 console.log("Sorry that letter is not in the word.");
